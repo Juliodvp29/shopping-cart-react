@@ -42,7 +42,9 @@ const ShoppingCart = () => {
         {products.map((product) => (<ProductItem key={product.id} data={product} addToCart={addToCart}/>))}
       </article>
       <h3>Carrito</h3>
-      <button className='clear' onClick={clearCart}>Clear</button>
+      {
+        cart.length > 0 ? (<button  className='clear' onClick={clearCart}>Clear</button>) : (<p style={{margin:'10px'}}>there are no products in the cart</p>)
+      }
       <article className='cart-container'>
         {cart.map((item, i) => (<CartItem key={i} data={item} deleteFromCart={deleteFromCart} deleteOneFromCart={deleteOneFromCart}/>))}
       </article>

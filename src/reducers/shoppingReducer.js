@@ -55,6 +55,8 @@ export const shoppingInitialState = {
   cart: [],
 };
 
+
+
 export function shoppingReducer(state, action) {
   switch (action.type) {
     case TYPES.ADD_TO_CART: {
@@ -70,7 +72,7 @@ export function shoppingReducer(state, action) {
               return {
                 ...item,
                 quantity: item.quantity + 1,
-                price: (item.price += product.price / 2),
+                // price: (item.price += product.price / 2),       
               };
             }
             return item;
@@ -84,10 +86,42 @@ export function shoppingReducer(state, action) {
     }
 
     case TYPES.REMOVE_FROM_CART: {
-      // eliminar un producto del carrito por id
+        const product = state.products.find( (product) => product.id === action.payload );
+        return {
+            ...state,
+            cart: state.cart.filter( (item) => item.id !== action.payload ),
+        };
     }
     case TYPES.REMOVE_ONE_FROM_CART: {
+        const product = state.cart.find(item => item.id === action.payload);
+    
+        if(product.quantity > 1){
+            
+            return {
+                ...state,
+                cart: state.cart.map(item => {
+                    if(item.id === action.payload){
+                        return {
+                            ...item,
+                            quantity: item.quantity - 1,
+                            
+                        };
+                    }
+                    return item;
+                }
+                ),
+            }
+
+        }else{
+            return {
+                ...state,
+                cart: state.cart.filter(item => item.id !== action.payload),
+            }
+        }
+         
+         
     }
+
     case TYPES.CLEAR_CART: {
       return {
         ...state,
